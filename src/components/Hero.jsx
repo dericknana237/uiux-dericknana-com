@@ -74,10 +74,10 @@ export default function Hero() {
           </p>
 
           {/* Main Giant Headline with Typewriter */}
-          <h1 className="font-serif text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 leading-[1.12] mb-6">
-            I design & build{' '}
+          <h1 className="font-serif text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 leading-[1.15] mb-6">
+            <span className="block mb-1 sm:mb-2">I design & build</span>
             <span
-              className={`font-sans font-bold inline-block transition-colors duration-300 ${phase !== 'deleting' ? 'typewriter-cursor' : ''}`}
+              className={`font-sans font-bold block min-h-[1.2em] transition-colors duration-300 ${phase !== 'deleting' ? 'typewriter-cursor' : ''}`}
               style={{ color }}
             >
               {text}
