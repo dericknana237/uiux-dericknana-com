@@ -1,0 +1,220 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,700&family=Inter:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─── Base reset & scroll ─────────────────────────────────── */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    @apply font-sans bg-white text-gray-900 overflow-x-hidden;
+  }
+
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+
+  ::selection {
+    background-color: rgba(255, 0, 0, 0.15);
+    color: #FF0000;
+  }
+}
+
+/* ─── Custom utilities ────────────────────────────────────── */
+@layer utilities {
+  .text-gradient-brand {
+    background: linear-gradient(135deg, #FF0000, #0096FF);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .bg-gradient-brand {
+    background: linear-gradient(135deg, #FF0000, #0096FF);
+  }
+
+  .border-gradient-brand {
+    border-image: linear-gradient(135deg, #FF0000, #0096FF) 1;
+  }
+
+  .glass {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+}
+
+/* ─── Typewriter cursor ───────────────────────────────────── */
+.typewriter-cursor::after {
+  content: '|';
+  display: inline-block;
+  animation: blink 1s step-end infinite;
+  color: #FF0000;
+  font-weight: 300;
+  margin-left: 2px;
+}
+
+/* ─── Dashed connector lines ──────────────────────────────── */
+.dashed-connector {
+  border-top: 2px dashed #d1d5db;
+}
+
+/* ─── Scrollbar ───────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #f9fafb;
+}
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(#FF0000, #0096FF);
+  border-radius: 3px;
+}
+
+/* ─── Section reveal animation ───────────────────────────── */
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ─── Polaroid card ───────────────────────────────────────── */
+.polaroid {
+  background: #ffffff;
+  padding: 10px 10px 30px 10px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.10), 0 1px 4px rgba(0,0,0,0.06);
+  border-radius: 4px;
+}
+
+/* ─── Marquee wrapper ─────────────────────────────────────── */
+.marquee-wrapper {
+  overflow: hidden;
+  width: 100%;
+}
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee 25s linear infinite;
+}
+.marquee-track:hover {
+  animation-play-state: paused;
+}
+
+/* ─── Modal overlay ───────────────────────────────────────── */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  backdrop-filter: blur(4px);
+  z-index: 1000;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  overflow-y: auto;
+  padding: 40px 20px;
+}
+.modal-content {
+  background: #fff;
+  border-radius: 24px;
+  max-width: 900px;
+  width: 100%;
+  animation: scaleIn 0.3s ease-out forwards;
+  position: relative;
+}
+
+/* ─── Floating label animation ────────────────────────────── */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-12px); }
+}
+.float-anim {
+  animation: float 5s ease-in-out infinite;
+}
+.float-anim-slow {
+  animation: float 7s ease-in-out infinite;
+}
+.float-anim-fast {
+  animation: float 3.5s ease-in-out infinite;
+}
+
+/* ─── Hero gradient bg ────────────────────────────────────── */
+.hero-bg {
+  background: radial-gradient(ellipse at 70% 30%, rgba(0,150,255,0.06) 0%, transparent 60%),
+              radial-gradient(ellipse at 20% 80%, rgba(255,0,0,0.05) 0%, transparent 60%),
+              #ffffff;
+}
+
+/* ─── Project card hover ──────────────────────────────────── */
+.project-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.project-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.10);
+}
+
+/* ─── Process card glow ───────────────────────────────────── */
+.process-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 16px 48px rgba(0,0,0,0.09);
+}
+.process-card {
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
+}
+
+/* ─── Testimonial card ────────────────────────────────────── */
+.testimonial-card {
+  transition: transform 0.3s ease;
+}
+.testimonial-card:hover {
+  transform: translateY(-4px);
+}
+
+/* ─── Button styles ───────────────────────────────────────── */
+.btn-primary {
+  @apply inline-flex items-center gap-2 px-6 py-3 rounded-full font-semibold text-white text-sm transition-all duration-300;
+  background: linear-gradient(135deg, #0096FF 0%, #00CFFF 100%);
+  box-shadow: 0 4px 20px rgba(0,150,255,0.30);
+}
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(0,150,255,0.45);
+  background: linear-gradient(135deg, #007FE0 0%, #00BAEE 100%);
+}
+
+.btn-outline {
+  @apply inline-flex items-center gap-2 px-6 py-3 rounded-full font-semibold text-sm border-2 transition-all duration-300;
+  border-color: #0096FF;
+  color: #0096FF;
+  background: transparent;
+}
+.btn-outline:hover {
+  background: rgba(0,150,255,0.08);
+  border-color: #0096FF;
+  color: #0096FF;
+  transform: translateY(-2px);
+}
+
+/* ─── Section spacing ─────────────────────────────────────── */
+.section-padding {
+  @apply py-24 px-6 md:px-12 lg:px-24;
+}
+
+/* ─── Responsive mockup stack ─────────────────────────────── */
+.mockup-stack {
+  position: relative;
+}
+.mockup-stack img {
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+}
