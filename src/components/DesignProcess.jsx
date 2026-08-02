@@ -56,7 +56,7 @@ export default function DesignProcess() {
   }, [])
 
   return (
-    <section ref={sectionRef} id="process" className="section-padding bg-white">
+    <section ref={sectionRef} id="process" className="section-padding">
       <div className="max-w-7xl mx-auto">
         {/* Section header */}
         <div className={`text-center mb-16 transition-all duration-700 ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>

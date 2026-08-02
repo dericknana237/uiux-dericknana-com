@@ -1,8 +1,9 @@
 import { useEffect, useRef } from 'react'
 
 /**
- * Full-page soft particle system rendered on a fixed canvas behind all content.
- * Particles are tiny dots / small circles drifting slowly and continuously.
+ * Full-page soft particle system — fixed canvas behind all content.
+ * Responsive: smaller sizes and fewer particles on mobile screens.
+ * Subtle, ambient, elegant shapes (circles, triangles, ellipses, dots).
  */
 export default function ParticleBackground() {
   const canvasRef = useRef(null)
@@ -12,64 +13,141 @@ export default function ParticleBackground() {
     if (!canvas) return
     const ctx = canvas.getContext('2d')
 
-    /* ── Config ─────────────────────────────── */
-    const PARTICLE_COUNT = 55
-    const COLORS = ['#0096FF', '#00CFFF', '#FF0000', '#FF6B6B', '#A78BFA']
-    const MIN_R = 2
-    const MAX_R = 6
-    const MIN_SPEED = 0.15
-    const MAX_SPEED = 0.45
-
-    /* ── Resize ────────────────────────────── */
-    const resize = () => {
-      canvas.width  = window.innerWidth
-      canvas.height = window.innerHeight
-    }
-    resize()
-    window.addEventListener('resize', resize)
-
-    /* ── Particle factory ──────────────────── */
     const rand = (a, b) => a + Math.random() * (b - a)
-    const makeParticle = () => ({
-      x:     rand(0, canvas.width),
-      y:     rand(0, canvas.height),
-      r:     rand(MIN_R, MAX_R),
-      color: COLORS[Math.floor(Math.random() * COLORS.length)],
-      vx:    rand(-MAX_SPEED, MAX_SPEED) || MIN_SPEED,
-      vy:    rand(-MAX_SPEED, MAX_SPEED) || MIN_SPEED,
-      alpha: rand(0.06, 0.18),
-      // subtle pulse
-      pulse:      0,
-      pulseSpeed: rand(0.008, 0.02),
-    })
+    const pick = (arr) => arr[Math.floor(Math.random() * arr.length)]
 
-    let particles = Array.from({ length: PARTICLE_COUNT }, makeParticle)
+    const COLORS = ['#0096FF', '#FF0000', '#FF6600', '#00CFFF']
+    const TYPES  = ['circle', 'circle', 'circle', 'triangle', 'ellipse', 'dot']
+
+    let isMobile = window.innerWidth < 768
+    let particles = []
     let rafId
 
-    /* ── Draw loop ─────────────────────────── */
+    /* ── Factory ─────────────────────────────────────────── */
+    const makeParticle = (width, height, mobile) => {
+      const type  = pick(TYPES)
+      const color = pick(COLORS)
+      const speed = rand(0.05, 0.25)
+      const angle = rand(0, Math.PI * 2)
+
+      // Mobile sizes & opacity vs Desktop
+      const minSize = mobile ? 8 : 12
+      const maxSize = mobile ? 20 : 30
+      const dotSize = mobile ? rand(1.5, 3.5) : rand(2, 4.5)
+
+      return {
+        type,
+        color,
+        x:      rand(0, width),
+        y:      rand(0, height),
+        vx:     Math.cos(angle) * speed,
+        vy:     Math.sin(angle) * speed,
+        size:   type === 'dot' ? dotSize : rand(minSize, maxSize),
+        alpha:  mobile ? rand(0.04, 0.09) : rand(0.05, 0.12),
+        rotate: rand(0, Math.PI * 2),
+        rotV:   rand(-0.003, 0.003),
+        pulse:  rand(0, Math.PI * 2),
+        pulseV: rand(0.006, 0.015),
+      }
+    }
+
+    /* ── Init / Resize ──────────────────────────────────── */
+    const initParticles = () => {
+      const w = window.innerWidth
+      const h = window.innerHeight
+      canvas.width  = w
+      canvas.height = h
+      isMobile = w < 768
+
+      const count = isMobile ? 22 : 38
+      particles = Array.from({ length: count }, () => makeParticle(w, h, isMobile))
+    }
+
+    initParticles()
+    window.addEventListener('resize', initParticles)
+
+    /* ── Zone multiplier ───────────────────────────────────── */
+    function zoneFactor(x) {
+      if (isMobile) return 1.0
+      const t = Math.max(0, (x / canvas.width - 0.45) / 0.55)
+      return 1 + t * 1.5
+    }
+
+    function alphaHex(a) {
+      return Math.round(Math.max(0, Math.min(1, a)) * 255)
+        .toString(16).padStart(2, '0')
+    }
+
+    /* ── Draw helpers ────────────────────────────────────── */
+    function drawCircle(p) {
+      const a = (p.alpha + Math.sin(p.pulse) * 0.02) * zoneFactor(p.x)
+      ctx.beginPath()
+      ctx.arc(p.x, p.y, p.size / 2, 0, Math.PI * 2)
+      ctx.strokeStyle = p.color + alphaHex(a)
+      ctx.lineWidth = isMobile ? 1 : 1.25
+      ctx.stroke()
+    }
+
+    function drawTriangle(p) {
+      const a = (p.alpha + Math.sin(p.pulse) * 0.02) * zoneFactor(p.x)
+      const r = p.size / 2
+      ctx.save()
+      ctx.translate(p.x, p.y)
+      ctx.rotate(p.rotate)
+      ctx.beginPath()
+      ctx.moveTo(0, -r)
+      ctx.lineTo(r * 0.866, r * 0.5)
+      ctx.lineTo(-r * 0.866, r * 0.5)
+      ctx.closePath()
+      ctx.strokeStyle = p.color + alphaHex(a)
+      ctx.lineWidth = isMobile ? 1 : 1.25
+      ctx.stroke()
+      ctx.restore()
+    }
+
+    function drawEllipse(p) {
+      const a = ((p.alpha * 0.6) + Math.sin(p.pulse) * 0.015) * zoneFactor(p.x)
+      ctx.save()
+      ctx.translate(p.x, p.y)
+      ctx.rotate(p.rotate)
+      ctx.beginPath()
+      ctx.ellipse(0, 0, p.size / 2, p.size / 3, 0, 0, Math.PI * 2)
+      ctx.fillStyle = p.color + alphaHex(a)
+      ctx.fill()
+      ctx.restore()
+    }
+
+    function drawDot(p) {
+      const a = (p.alpha + Math.sin(p.pulse) * 0.02) * zoneFactor(p.x)
+      ctx.beginPath()
+      ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2)
+      ctx.fillStyle = p.color + alphaHex(a)
+      ctx.fill()
+    }
+
+    /* ── Animation loop ──────────────────────────────────── */
     const draw = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height)
 
-      particles.forEach((p) => {
-        /* move */
+      for (const p of particles) {
         p.x += p.vx
         p.y += p.vy
-        p.pulse += p.pulseSpeed
+        p.rotate += p.rotV
+        p.pulse  += p.pulseV
 
-        /* wrap around edges */
-        if (p.x < -p.r * 2) p.x = canvas.width + p.r
-        if (p.x > canvas.width + p.r * 2) p.x = -p.r
-        if (p.y < -p.r * 2) p.y = canvas.height + p.r
-        if (p.y > canvas.height + p.r * 2) p.y = -p.r
+        const pad = p.size + 4
+        if (p.x < -pad)                p.x = canvas.width  + pad
+        if (p.x > canvas.width  + pad) p.x = -pad
+        if (p.y < -pad)                p.y = canvas.height + pad
+        if (p.y > canvas.height + pad) p.y = -pad
 
-        /* pulsing opacity */
-        const a = p.alpha + Math.sin(p.pulse) * 0.04
-
-        ctx.beginPath()
-        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2)
-        ctx.fillStyle = p.color + Math.round(a * 255).toString(16).padStart(2, '0')
-        ctx.fill()
-      })
+        switch (p.type) {
+          case 'circle':   drawCircle(p);   break
+          case 'triangle': drawTriangle(p); break
+          case 'ellipse':  drawEllipse(p);  break
+          default:         drawDot(p);      break
+        }
+      }
 
       rafId = requestAnimationFrame(draw)
     }
@@ -78,7 +156,7 @@ export default function ParticleBackground() {
 
     return () => {
       cancelAnimationFrame(rafId)
-      window.removeEventListener('resize', resize)
+      window.removeEventListener('resize', initParticles)
     }
   }, [])
 

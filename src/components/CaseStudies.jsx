@@ -147,7 +147,7 @@ export default function CaseStudies() {
   }, [])
 
   return (
-    <section ref={sectionRef} id="work" className="section-padding bg-gray-50">
+    <section ref={sectionRef} id="work" className="section-padding">
       <div className="max-w-7xl mx-auto">
 
         {/* Section header */}
