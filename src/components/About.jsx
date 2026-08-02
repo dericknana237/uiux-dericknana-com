@@ -4,12 +4,9 @@ import author2 from '/assets/about_author_2.jpg'
 import author3 from '/assets/about_author_3.jpeg'
 
 const badges = [
-  { label: 'INTJ', color: 'bg-red-50 text-red-600 border border-red-100', emoji: '🧠' },
-  { label: 'Capricorn ♑', color: 'bg-blue-50 text-blue-600 border border-blue-100', emoji: '⭐' },
-  { label: 'Passionate UI/UX', color: 'bg-purple-50 text-purple-600 border border-purple-100', emoji: '🎨' },
-  { label: 'Coffee Addict', color: 'bg-amber-50 text-amber-600 border border-amber-100', emoji: '☕' },
-  { label: 'Design Systems', color: 'bg-green-50 text-green-600 border border-green-100', emoji: '⚙️' },
-  { label: 'Based in Cameroon', color: 'bg-gray-50 text-gray-600 border border-gray-100', emoji: '🌍' },
+  { label: 'Passionate Design', color: 'bg-purple-50 text-purple-600 border border-purple-100', emoji: '🎨' },
+  { label: 'Coffee Addict',     color: 'bg-amber-50 text-amber-600 border border-amber-100',   emoji: '☕' },
+  { label: 'Nature Lover',      color: 'bg-green-50 text-green-600 border border-green-100',   emoji: '🌿' },
 ]
 
 const skills = [
@@ -125,7 +122,7 @@ export default function About() {
                       className="h-full rounded-full transition-all duration-1000"
                       style={{
                         width: visible ? `${skill.level}%` : '0%',
-                        background: `linear-gradient(90deg, #FF0000, #0096FF)`,
+                        background: `#0096FF`,
                         transitionDelay: '400ms',
                       }}
                     />

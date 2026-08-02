@@ -7,7 +7,8 @@ import nelam2 from '/assets/projet_nelam_mobile_2.jpeg'
 import nelam3 from '/assets/projet_nelam_mobile_3.jpeg'
 
 import zihmaM1 from '/assets/projet_zihma_mobile_2.jpeg'
-import zihmaM2 from '/assets/projet_zihma_mobile_3.jpeg'
+import zihmaM2 from '/assets/projet_zihma_mobile_1.png'
+import zihmaM3 from '/assets/projet_zihma_mobile_3.jpeg'
 import zihmaW1 from '/assets/projet_zihma_web_1.jpeg'
 import zihmaW2 from '/assets/projet_zihma_web_2.jpeg'
 

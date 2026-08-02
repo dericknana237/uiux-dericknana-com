@@ -17,6 +17,7 @@ export default {
           lavender: '#F3F0FF',
           peach: '#FFF4EC',
           sky: '#EFF8FF',
+          green: '#F0FFF4',
         },
         accent: {
           peach: '#FF8C55',
