@@ -149,9 +149,8 @@
 
 /* ─── Hero gradient bg ────────────────────────────────────── */
 .hero-bg {
-  background: radial-gradient(ellipse at 70% 30%, rgba(0,150,255,0.06) 0%, transparent 60%),
-              radial-gradient(ellipse at 20% 80%, rgba(255,0,0,0.05) 0%, transparent 60%),
-              #ffffff;
+  background: radial-gradient(ellipse at 70% 30%, rgba(0,150,255,0.12) 0%, transparent 60%),
+              radial-gradient(ellipse at 20% 80%, rgba(255,0,0,0.10) 0%, transparent 60%);
 }
 
 /* ─── Project card hover ──────────────────────────────────── */

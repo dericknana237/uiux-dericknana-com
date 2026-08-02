@@ -97,7 +97,7 @@ export default function Testimonials() {
   }, [perPage, totalPages])
 
   return (
-    <section ref={sectionRef} id="testimonials" className="section-padding bg-white overflow-hidden">
+    <section ref={sectionRef} id="testimonials" className="section-padding overflow-hidden">
       <div className="max-w-7xl mx-auto">
 
         {/* ── Header ── */}

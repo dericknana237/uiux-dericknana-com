@@ -31,7 +31,7 @@ export default function About() {
   }, [])
 
   return (
-    <section ref={sectionRef} id="about" className="section-padding bg-gray-50">
+    <section ref={sectionRef} id="about" className="section-padding">
       <div className="max-w-7xl mx-auto">
 
         {/* Header */}
